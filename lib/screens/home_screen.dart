@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:wscube_todo_app/screens/drawer_screen.dart';
 import 'package:wscube_todo_app/screens/new_note.dart';
 import 'package:wscube_todo_app/screens/note.dart';
@@ -16,96 +15,13 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Note> noteList = [];
   late Note _deletedNote;
   bool isLight = false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: isLight ? Colors.black12 : Colors.white,
-      /*appBar: AppBar(
-        backgroundColor: Colors.blue,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(15),
-            bottomLeft: Radius.circular(15),
-          ),
-        ),
-        title: const Text(
-          "Today Note",
-          style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        actions: [
-          Switch(
-            value: isLight,
-            inactiveThumbColor: Colors.black,
-            thumbIcon: MaterialStateProperty.resolveWith((states) {
-              if (states.contains(MaterialState.selected)) {
-                return const Icon(Icons.nightlight);
-              } else {
-                return const Icon(Icons.sunny);
-              }
-            }),
-            onChanged: (value) {
-              isLight = value;
-              setState(() {});
-            },
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-          ),
-          PopupMenuButton(
-            color: Colors.blue.shade50,
-            icon: const Icon(Icons.more_vert, color: Colors.white),
-            itemBuilder: (ctx) {
-              return [
-                const PopupMenuItem(
-                  child: Row(
-                    children: [
-                      Icon(Icons.settings),
-                      SizedBox(width: 11),
-                      Text("Settings"),
-                    ],
-                  ),
-                ),
-                const PopupMenuItem(
-                  child: Row(
-                    children: [
-                      Icon(Icons.delete),
-                      SizedBox(width: 11),
-                      Text("Delete"),
-                    ],
-                  ),
-                ),
-                const PopupMenuItem(
-                  child: Row(
-                    children: [
-                      Icon(Icons.share),
-                      SizedBox(width: 11),
-                      Text("Send"),
-                    ],
-                  ),
-                ),
-                const PopupMenuItem(
-                  child: Row(
-                    children: [
-                      Icon(Icons.label_outline),
-                      SizedBox(width: 11),
-                      Text("Labels"),
-                    ],
-                  ),
-                ),
-              ];
-            },
-          ),
-        ],
-      ),*/
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
@@ -121,10 +37,15 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 children: [
                   const SizedBox(width: 15),
-                  const Icon(
-                    CupertinoIcons.line_horizontal_3,
-                    color: Colors.white,
-                    size: 30,
+                  IconButton(
+                    onPressed: () {
+                      _scaffoldKey.currentState?.openDrawer();
+                    },
+                    icon: const Icon(
+                      CupertinoIcons.line_horizontal_3,
+                      color: Colors.white,
+                      size: 30,
+                    ),
                   ),
                   Expanded(
                     child: TextFormField(
@@ -166,7 +87,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            TextFormField(),
             ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: noteList.length,
