@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wscube_todo_app/screens/drawer_screen.dart';
 import 'package:wscube_todo_app/screens/new_note.dart';
@@ -13,9 +12,25 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Note> noteList = [];
+  List<Note> filterNotes = [];
   late Note _deletedNote;
   bool isLight = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  /*@override
+  void initState() {
+    filterNotes = widget.notes;
+    super.initState();
+  }
+
+  void _filterNotes(String query) {
+    setState(() {
+      filterNotes = widget.notes.where((note) {
+        return note.title.toLowerCase().contains(query.toLowerCase()) ||
+            note.description.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+    });
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 60,
               margin: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Colors.grey,
+                color: Colors.blue.shade400,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
@@ -42,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       _scaffoldKey.currentState?.openDrawer();
                     },
                     icon: const Icon(
-                      CupertinoIcons.line_horizontal_3,
+                      Icons.double_arrow,
                       color: Colors.white,
                       size: 30,
                     ),
@@ -50,8 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: TextFormField(
                       decoration: const InputDecoration(
-                        fillColor: Colors.grey,
-                        filled: true,
                         label: Text(
                           "Search your notes",
                           style: TextStyle(
@@ -82,7 +95,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const Padding(
                     padding: EdgeInsets.all(5.0),
-                    child: CircleAvatar(maxRadius: 20),
+                    child: CircleAvatar(
+                      maxRadius: 25,
+                      backgroundColor: Colors.black,
+                      backgroundImage: AssetImage("assets/images/hacker.png"),
+                    ),
                   )
                 ],
               ),
