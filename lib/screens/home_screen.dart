@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wscube_todo_app/screens/drawer_screen.dart';
+import 'package:wscube_todo_app/screens/favorite_screen.dart';
 import 'package:wscube_todo_app/screens/new_note.dart';
 import 'package:wscube_todo_app/screens/note.dart';
 
@@ -12,25 +14,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Note> noteList = [];
-  List<Note> filterNotes = [];
-  late Note _deletedNote;
+  List<Note> favouriteNotes = [];
   bool isLight = false;
+  bool isFavourite = false;
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  /*@override
-  void initState() {
-    filterNotes = widget.notes;
-    super.initState();
-  }
-
-  void _filterNotes(String query) {
-    setState(() {
-      filterNotes = widget.notes.where((note) {
-        return note.title.toLowerCase().contains(query.toLowerCase()) ||
-            note.description.toLowerCase().contains(query.toLowerCase());
-      }).toList();
-    });
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -93,14 +81,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       setState(() {});
                     },
                   ),
-                  const Padding(
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (ctx) => FavouriteScreen(
+                                  favouriteNote: favouriteNotes)));
+                    },
+                    icon: const Icon(CupertinoIcons.star),
+                  )
+                  /*const Padding(
                     padding: EdgeInsets.all(5.0),
                     child: CircleAvatar(
                       maxRadius: 25,
                       backgroundColor: Colors.black,
                       backgroundImage: AssetImage("assets/images/hacker.png"),
                     ),
-                  )
+                  )*/
                 ],
               ),
             ),
@@ -113,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   return InkWell(
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (ctx) => const NewNote()));
+                          MaterialPageRoute(builder: (ctx) => NewNote()));
                     },
                     child: Container(
                       margin: const EdgeInsets.all(10),
@@ -155,37 +153,61 @@ class _HomeScreenState extends State<HomeScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    noteList.remove(note);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: const Text(
-                                          "Note Deleted...",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15,
+                              Row(
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        isFavourite = !isFavourite;
+                                        note.isFavourite = !note.isFavourite;
+                                        if (note.isFavourite) {
+                                          favouriteNotes.add(note);
+                                        } else {
+                                          favouriteNotes.remove(note);
+                                        }
+                                      });
+                                    },
+                                    icon: isFavourite
+                                        ? const Icon(
+                                            CupertinoIcons.heart_fill,
+                                            color: Colors.red,
+                                          )
+                                        : const Icon(CupertinoIcons.heart),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        noteList.remove(note);
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: const Text(
+                                              "Note Deleted...",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            backgroundColor:
+                                                Colors.grey.shade400,
+                                            action: SnackBarAction(
+                                                label: "Undo",
+                                                textColor: Colors.blue,
+                                                onPressed: () {
+                                                  setState(() {
+                                                    noteList.add(note);
+                                                  });
+                                                }),
                                           ),
-                                        ),
-                                        backgroundColor: Colors.grey.shade400,
-                                        action: SnackBarAction(
-                                            label: "Undo",
-                                            textColor: Colors.blue,
-                                            onPressed: () {
-                                              setState(() {
-                                                _deletedNote = note;
-                                                noteList.add(_deletedNote);
-                                              });
-                                            }),
-                                      ),
-                                    );
-                                  });
-                                },
-                                icon: const Icon(
-                                  Icons.delete_forever,
-                                  color: Colors.red,
-                                ),
+                                        );
+                                      });
+                                    },
+                                    icon: const Icon(
+                                      Icons.delete_forever,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ],
                               ),
                               Text(
                                 note.time,
@@ -226,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
       ),
-      drawer: const DrawerScreen(),
+      drawer: DrawerScreen(),
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wscube_todo_app/screens/note.dart';
 
 class NewNote extends StatefulWidget {
+  /* final Note note;*/
   const NewNote({super.key});
 
   @override
@@ -135,10 +136,10 @@ class _NewNoteState extends State<NewNote> {
                     ElevatedButton(
                       onPressed: () {
                         final singleNote = Note(
-                          _titleController.text,
-                          _noteController.text,
-                          pickedTime,
-                          pickedDate,
+                          title: _titleController.text,
+                          description: _noteController.text,
+                          time: pickedTime,
+                          date: pickedDate,
                         );
                         if (_formKey.currentState!.validate()) {
                           Navigator.pop(context, singleNote);

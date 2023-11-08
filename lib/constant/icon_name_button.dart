@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class IconNameButton extends StatelessWidget {
-  IconNameButton({
+  IconNameButton(
+    this.onTap, {
     super.key,
     required this.iconData,
     required this.name,
@@ -9,6 +10,7 @@ class IconNameButton extends StatelessWidget {
 
   IconData iconData;
   String name;
+  VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -16,21 +18,24 @@ class IconNameButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
-          Row(
-            children: [
-              Icon(
-                iconData,
-                color: Colors.white,
-              ),
-              const SizedBox(width: 11),
-              Text(
-                name,
-                style: const TextStyle(
+          InkWell(
+            onTap: onTap,
+            child: Row(
+              children: [
+                Icon(
+                  iconData,
                   color: Colors.white,
-                  fontSize: 15,
                 ),
-              )
-            ],
+                const SizedBox(width: 11),
+                Text(
+                  name,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                  ),
+                )
+              ],
+            ),
           ),
           const SizedBox(height: 10)
         ],
