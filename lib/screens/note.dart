@@ -12,3 +12,7 @@ class Note {
   bool isFavourite;
   DateTime date = DateTime.now();
 }
+
+List<Note> noteList = [];
+
+List<Note> favouriteNotes = [];

@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'note.dart';
 
 class FavouriteScreen extends StatefulWidget {
-  const FavouriteScreen({
+  FavouriteScreen({
     super.key,
-    required this.favouriteNote,
   });
-  final List<Note> favouriteNote;
 
   @override
   State<FavouriteScreen> createState() => _FavouriteScreenState();
@@ -22,10 +20,10 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       appBar: AppBar(),
       body: ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: widget.favouriteNote.length,
+          itemCount: favouriteNotes.length,
           shrinkWrap: true,
           itemBuilder: (ctx, index) {
-            final note = widget.favouriteNote[index];
+            final note = favouriteNotes[index];
             return Container(
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.all(10),
@@ -69,7 +67,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                       IconButton(
                         onPressed: () {
                           setState(() {
-                            widget.favouriteNote.remove(note);
+                            favouriteNotes.remove(note);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: const Text(
@@ -86,7 +84,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                     onPressed: () {
                                       setState(() {
                                         _deletedNote = note;
-                                        widget.favouriteNote.add(_deletedNote);
+                                        favouriteNotes.add(_deletedNote);
                                       });
                                     }),
                               ),

@@ -13,8 +13,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Note> noteList = [];
-  List<Note> favouriteNotes = [];
   bool isLight = false;
   bool isFavourite = false;
 
@@ -86,8 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (ctx) => FavouriteScreen(
-                                  favouriteNote: favouriteNotes)));
+                              builder: (ctx) => FavouriteScreen()));
                     },
                     icon: const Icon(CupertinoIcons.star),
                   )
@@ -110,8 +107,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   final note = noteList[index];
                   return InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (ctx) => NewNote()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (ctx) => const NewNote())).then((value) {
+                        setState(() {});
+                      });
                     },
                     child: Container(
                       margin: const EdgeInsets.all(10),
@@ -127,20 +128,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                note.title,
+                                noteList[index].title,
                                 style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Text(
-                                note.description,
+                                noteList[index].description,
                                 style: const TextStyle(
                                   fontSize: 16,
                                 ),
                               ),
                               Text(
-                                "${note.date.toLocal()}".split(" ")[0],
+                                "${noteList[index].date.toLocal()}"
+                                    .split(" ")[0],
                                 style: const TextStyle(
                                   fontSize: 15,
                                   color: Colors.white,
@@ -159,11 +161,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     onPressed: () {
                                       setState(() {
                                         isFavourite = !isFavourite;
-                                        note.isFavourite = !note.isFavourite;
-                                        if (note.isFavourite) {
-                                          favouriteNotes.add(note);
+                                        noteList[index].isFavourite =
+                                            !noteList[index].isFavourite;
+                                        if (noteList[index].isFavourite) {
+                                          favouriteNotes.add(noteList[index]);
                                         } else {
-                                          favouriteNotes.remove(note);
+                                          favouriteNotes
+                                              .remove(noteList[index]);
                                         }
                                       });
                                     },
@@ -177,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   IconButton(
                                     onPressed: () {
                                       setState(() {
-                                        noteList.remove(note);
+                                        noteList.remove(noteList[index]);
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           SnackBar(
@@ -210,7 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ],
                               ),
                               Text(
-                                note.time,
+                                noteList[index].time,
                                 style: const TextStyle(
                                   fontSize: 15,
                                   color: Colors.white,
@@ -242,9 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
               context, MaterialPageRoute(builder: (ctx) => const NewNote()));
 
           if (newNote != null) {
-            setState(() {
-              noteList.add(newNote);
-            });
+            setState(() {});
           }
         },
       ),

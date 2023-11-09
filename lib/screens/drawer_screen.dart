@@ -76,12 +76,8 @@ class DrawerScreen extends StatelessWidget {
             const SizedBox(height: 5),
             IconNameButton(
               () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (ctx) => FavouriteScreen(
-                              favouriteNote: favoriteNotes,
-                            )));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (ctx) => FavouriteScreen()));
               },
               iconData: CupertinoIcons.heart_fill,
               name: "Favorite",

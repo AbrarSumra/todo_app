@@ -14,7 +14,6 @@ class _NewNoteState extends State<NewNote> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
 
-  List<Note> notes = [];
   DateTime pickedDate = DateTime.now();
   String pickedTime = "";
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -144,7 +143,7 @@ class _NewNoteState extends State<NewNote> {
                         if (_formKey.currentState!.validate()) {
                           Navigator.pop(context, singleNote);
 
-                          notes.add(singleNote);
+                          noteList.add(singleNote);
                         }
                         setState(() {});
 
