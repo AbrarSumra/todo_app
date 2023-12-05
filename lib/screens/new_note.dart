@@ -145,6 +145,7 @@ class _NewNoteState extends State<NewNote> {
 
                           noteList.add(singleNote);
                         }
+
                         setState(() {});
 
                         _titleController.clear();
